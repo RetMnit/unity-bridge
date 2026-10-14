@@ -1,10 +1,10 @@
 {
   "name": "com.dsh.unity-bridge",
-  "version": "0.1.2",
-  "displayName": "DSH Unity Bridge",
-  "description": "Local HTTP bridge (127.0.0.1:6417) that lets the DSH agent control this Unity editor by executing C#.",
+  "version": "0.2.0",
+  "displayName": "Unity Bridge",
+  "description": "Agent-neutral localhost bridge with Unity Roslyn evaluation, durable command status and project discovery.",
   "unity": "2022.3",
   "author": {
-    "name": "DSH"
+    "name": "Unity Bridge contributors"
   }
 }

@@ -1,0 +1,11 @@
+Library/
+Temp/
+Logs/
+obj/
+node_modules/
+.DS_Store
+*.csproj
+*.sln
+*.user
+.env
+test-results/

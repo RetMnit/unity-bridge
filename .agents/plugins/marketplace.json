@@ -1,0 +1,11 @@
+{
+  "name": "unity-bridge-tools",
+  "plugins": [
+    {
+      "name": "unity-bridge",
+      "source": { "source": "local", "path": "./plugins/unity-bridge" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Developer Tools"
+    }
+  ]
+}

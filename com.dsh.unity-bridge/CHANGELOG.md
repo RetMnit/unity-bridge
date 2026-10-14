@@ -1,5 +1,16 @@
 # Changelog — com.dsh.unity-bridge
 
+## [0.2.0] - 2026-10-14
+
+- Agent-neutral Unity Bridge display name/menu; preserved package name, namespace, existing GUIDs and legacy HTTP execution contract.
+- Replaced CodeDom with Unity's bundled Roslyn and canonical framework/Editor/project references. C# 9, local functions and System types are supported without the old facade conflicts. Compiler runs off the main thread, with UTF-8 source-mapped diagnostics and a 30 s compile deadline.
+- Added project/PID/instance identity, cached state timestamps, automatic per-user discovery and port fallback for multiple Editors.
+- Added asynchronous jobs with stable IDs, bounded deduplication, payload conflicts, durable status, recovery without replay, queued cancellation and dispatch-time expiry checks. Running status remains available while user code blocks the main thread.
+- Added fixed state/hierarchy/log/screenshot operations, bounded logs/binary output, snippet caching and an explicit 128-assembly domain limit.
+- Added an Editor-only assembly definition, request size/concurrency bounds, localhost Host checks, browser Origin rejection and optional Bearer authentication.
+- Manual Stop persists across domain reload within the session; graceful shutdown records pending job outcomes.
+- Added a zero-dependency Node CLI, Codex Skill/plugin, Git-based UPM installation, protocol docs and client/Editor tests in the repository.
+
 DSH ↔ Unity 编辑器桥接 UPM 包（本地 HTTP 服务 127.0.0.1:6417，供 DSH `unity_execute` 调用）。
 
 ## [0.1.2] - 2026-08-20

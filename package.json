@@ -1,0 +1,9 @@
+{
+  "name": "@retmnit/unity-bridge",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=18" },
+  "bin": { "unity-bridge": "plugins/unity-bridge/skills/unity-bridge/scripts/unity-bridge.mjs" },
+  "scripts": { "test": "node --test tests/*.test.mjs" }
+}

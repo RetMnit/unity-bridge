@@ -1,0 +1,6 @@
+{
+  "name": "UnityBridge.Editor",
+  "rootNamespace": "DshBridge",
+  "includePlatforms": ["Editor"],
+  "autoReferenced": true
+}
