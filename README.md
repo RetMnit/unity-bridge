@@ -20,6 +20,8 @@ https://github.com/RetMnit/unity-bridge.git?path=/com.dsh.unity-bridge#v0.2.0
 
 依赖固定到标签，不跟随本地源码修改。升级时把 `#v0.2.0` 换成新的已发布标签；开发者在此仓库改源码并提交、打标签、推送，项目内的 PackageCache 不用于开发。无需任何硬编码磁盘引用。
 
+如果 Package Manager 报 GitHub `Connection was reset`，先核对 Unity 启动环境的 Git 网络访问。终端的临时代理变量不会自动传给从 Hub 打开的编辑器；可按自己的网络配置使用 TUN 或 GitHub 专用 Git 代理，恢复访问后点 Retry。
+
 ## Codex 安装
 
 本机需要 Node.js 18+。安装仓库内的 Skill/CLI 插件：

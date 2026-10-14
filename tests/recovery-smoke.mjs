@@ -26,7 +26,7 @@ for (let i = 0; i < 120; i++) {
   try { after = await request(editor.url, '/api/health'); if (after.instanceId !== editor.instanceId) break; } catch { }
   await sleep(250);
 }
-assert(after && after.instanceId !== editor.instanceId, 'Domain did not reload.');
+assert(after && after.instanceId !== editor.instanceId, 'Domain did not reload. In a graphical Editor, keep the Unity window focused so pending script reload can run.');
 assert.equal((await request(editor.url, `/api/jobs/${stableId}`)).result, 'durable');
 assert.equal((await submit(editor.url, { code }, { id: stableId })).result, 'durable');
 console.log(JSON.stringify({ checks: ['status responsive during execution', 'queued cancellation', 'queue deadline', 'client wait deadline with later recovery', 'domain reload restart', 'durable result and dedup after reload'], stableId, instanceChanged: true }, null, 2));
