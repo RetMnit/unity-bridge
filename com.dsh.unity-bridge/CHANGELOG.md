@@ -1,5 +1,13 @@
 # Changelog — com.dsh.unity-bridge
 
+## [0.3.0] - 2026-10-16
+
+- Added a DSH-native adapter to the repository, sharing the same Node client as the Codex CLI for project selection, task submission/recovery, authentication and binary artifacts.
+- Propagated caller cancellation through HTTP, discovery and polling. Cancelling the client wait never silently cancels or repeats an accepted Unity command; uncertain outcomes retain the original task ID.
+- Preserved task identity on invalid/lost responses, status-query failures and artifact-save errors. Added response ID/state validation and a single submission/wait deadline budget.
+- Corrected omitted inspection line limits to use 100 lines without changing persisted request fingerprints or protocol version.
+- Release metadata, installation instructions and both host integrations are aligned to v0.3.0. Existing v0.2.0 protocol-2 Editors remain compatible with the new clients.
+
 ## [0.2.0] - 2026-10-14
 
 - Agent-neutral Unity Bridge display name/menu; preserved package name, namespace, existing GUIDs and legacy HTTP execution contract.
@@ -10,8 +18,6 @@
 - Added an Editor-only assembly definition, request size/concurrency bounds, localhost Host checks, browser Origin rejection and optional Bearer authentication.
 - Manual Stop persists across domain reload within the session; graceful shutdown records pending job outcomes.
 - Added a zero-dependency Node CLI, Codex Skill/plugin, Git-based UPM installation, protocol docs and client/Editor tests in the repository.
-
-DSH ↔ Unity 编辑器桥接 UPM 包（本地 HTTP 服务 127.0.0.1:6417，供 DSH `unity_execute` 调用）。
 
 ## [0.1.2] - 2026-08-20
 

@@ -37,6 +37,11 @@ const binary = await run('binary bytes', 'return new byte[]{0,1,2,255};'); asser
 await run('Editor module and Engine module identity', 'var go = new GameObject("BridgeSmokeTemporary"); try { return typeof(SceneView).Name + ":" + go.transform.position.x; } finally { Object.DestroyImmediate(go); }', 'SceneView:0');
 await run('Editor generic API references', 'return EditorWindow.HasOpenInstances<SceneView>().ToString();');
 for (const operation of ['state', 'hierarchy', 'logs']) { assert.equal((await submit(editor.url, { operation })).state, 'succeeded'); checks.push(operation); }
+await run('seed inspection log lines', 'Debug.Log("default-limit-first"); Debug.Log("default-limit-second"); return "logs-ready";');
+const defaultLogs = (await submit(editor.url, { operation: 'logs' })).result;
+assert.match(defaultLogs, /default-limit-first/); assert.match(defaultLogs, /default-limit-second/);
+assert.equal((await submit(editor.url, { operation: 'logs', limit: 1 })).result.split('\n').length, 1);
+checks.push('omitted inspection limit defaults to multiple lines');
 const malformed = await fetch(editor.url + '/api/jobs', { method: 'POST', body: '{bad' }); assert.equal(malformed.status, 400);
 const browser = await fetch(editor.url + '/api/health', { headers: { Origin: 'https://example.com' } }); assert.equal(browser.status, 403); checks.push('malformed JSON and browser origin rejected');
 await assert.rejects(request(editor.url, '/api/jobs', { method: 'POST', body: { code: 'return 42;' }, projectPath: project + '-wrong' }), e => e.status === 409); checks.push('project identity guard');

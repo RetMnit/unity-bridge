@@ -1,4 +1,15 @@
-# Validation — 0.2.0
+# Validation — 0.3.0
+
+Validated on 2026-10-16 with Windows, Unity 2022.3.62f3 and Node 22.23.2. Tests used dedicated disposable projects; game projects were not modified.
+
+- Shared client regressions cover explicit token propagation, pre-dispatch cancellation, cancellation after submission, interrupted polling, malformed/mismatched replies, server/query failures retaining IDs, artifact write failures, and a full 8 MiB binary result.
+- DSH adapter tests cover native tool schema registration, the legacy `{code}` call shape, single submission, pre-submission ID recovery, uncertain outcomes, project targeting, authentication, binary artifacts, bounded rendering and the local `recent` journal.
+- The DSH bundle loader and adapter were exercised against both mock servers and a real Editor: discovery/health, C# evaluation, compilation failures, binary file output and status queries.
+- Editor smoke tests passed for the HTTP contract, C# 9/System and project API references, deduplication, cached snippets, diagnostics, binary output, inspection commands and project guards. Omitted inspection limits returned multiple log lines; an explicit limit of 1 returned one line.
+- Recovery tests passed for status responsiveness while the main thread runs, queued cancellation/expiry, wait timeout followed by result recovery, domain reload and retained deduplication.
+- Desktop Host caches imported DSH plugin modules. Editing bundle files or touching profile configuration does not reload an existing preset's module. Restart Desktop after installing an adapter update; verify the actual tool table contains `unity_bridge` before using its new parameters.
+
+## Previous full executor validation (0.2.0)
 
 Validated on 2026-10-14 with Windows, Unity 2022.3.62f3 and Node 22.23.2. Tests used disposable projects, not a user's game project.
 

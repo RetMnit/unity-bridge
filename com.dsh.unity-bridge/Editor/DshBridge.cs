@@ -33,7 +33,7 @@ namespace DshBridge
     [Serializable] public sealed class HealthView
     {
         public bool ok = true, compiling, updating, playing, paused;
-        public string unity, bridge = "0.2.0", protocol = "2", projectPath, projectName, instanceId, sampledUtc;
+        public string unity, bridge = "0.3.0", protocol = "2", projectPath, projectName, instanceId, sampledUtc;
         public string compiler = "Unity Roslyn / C# 9";
         public int pid, port, queued, loadedSnippets;
         public string[] capabilities = { "jobs", "deduplication", "durable-status", "cancel-queued", "hierarchy", "logs", "state", "screenshot" };
@@ -278,7 +278,7 @@ namespace DshBridge
         }
         private static object Builtin(BridgeRequest request)
         {
-            var count = Math.Max(1, Math.Min(request.limit, 1000));
+            var count = request.limit <= 0 ? 100 : Math.Min(request.limit, 1000);
             switch (request.operation)
             {
                 case "state": RefreshHealth(); return healthJson;

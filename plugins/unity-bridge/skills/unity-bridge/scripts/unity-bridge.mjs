@@ -2,9 +2,9 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { connect, discover, request, submit, pollJob, saveBinary, BridgeError } from './client.mjs';
+import { connect, discover, request, submit, pollJob, checkedJob, saveBinary, BridgeError } from './client.mjs';
 
-const help = `Unity Bridge 0.2.0 (Node 18+, localhost only)
+const help = `Unity Bridge 0.3.0 (Node 18+, localhost only)
   unity-bridge list
   unity-bridge health|state|hierarchy|logs|screenshot [options]
   unity-bridge exec --file snippet.cs | --code "return 42;" [options]
@@ -46,26 +46,33 @@ export function parse(args) {
 }
 export async function main(args = process.argv.slice(2)) {
   if (!args.length || args.includes('--help')) { console.log(help); return; }
-  let endpoint;
+  let endpoint, queriedId;
+  const controller = new AbortController();
+  const stopWaiting = () => controller.abort();
+  process.once('SIGINT', stopWaiting); process.once('SIGTERM', stopWaiting);
   try {
     const { options: o, positional: [command, id, ...extra] } = parse(args);
     if (extra.length || (id && !['status', 'wait', 'cancel'].includes(command))) throw new BridgeError('Unexpected positional argument.');
-    if (command === 'list') { console.log(JSON.stringify(await discover(), null, 2)); return; }
+    if (command === 'list') { console.log(JSON.stringify(await discover({ signal: controller.signal }), null, 2)); return; }
     if (!['health', 'state', 'hierarchy', 'logs', 'screenshot', 'exec', 'status', 'wait', 'cancel'].includes(command)) throw new BridgeError('Unknown command. Use --help.');
     if (command === 'exec' && (o.file === undefined) === (o.code === undefined)) throw new BridgeError('exec requires exactly one of --file or --code.');
     if (['status', 'wait', 'cancel'].includes(command) && !/^[A-Za-z0-9_-]{1,80}$/.test(id || '')) throw new BridgeError('A valid job ID is required.');
-    endpoint = await connect(o);
+    if (['status', 'wait', 'cancel'].includes(command)) queriedId = id;
+    endpoint = await connect({ ...o, signal: controller.signal });
     let result;
     if (command === 'health') result = endpoint;
     else {
       if (endpoint.protocol !== '2') throw new BridgeError('This client requires Unity Bridge 0.2.0/protocol 2. Update the UPM package first.');
-      if (command === 'status' || command === 'cancel') result = await request(endpoint.url, `/api/jobs/${id}`, { method: command === 'cancel' ? 'DELETE' : 'GET', projectPath: endpoint.projectPath });
-      else if (command === 'wait') result = await pollJob(endpoint.url, id, { timeoutMs: o.timeout * 1000, projectPath: endpoint.projectPath });
+      if (command === 'status' || command === 'cancel') {
+        try { result = checkedJob(await request(endpoint.url, `/api/jobs/${id}`, { method: command === 'cancel' ? 'DELETE' : 'GET', projectPath: endpoint.projectPath, signal: controller.signal }), id); }
+        catch (e) { throw new BridgeError(e.message, { id, state: 'unknown', executionMayHaveOccurred: true, status: e.status, exitCode: 2 }); }
+      }
+      else if (command === 'wait') result = await pollJob(endpoint.url, id, { timeoutMs: o.timeout * 1000, projectPath: endpoint.projectPath, signal: controller.signal });
       else {
         const code = command === 'exec' ? (o.file ? await readFile(o.file, 'utf8') : o.code) : undefined;
         if (code !== undefined && (!code.trim() || Buffer.byteLength(code, 'utf8') > 900000)) throw new BridgeError('Snippet must be non-empty and below 900 KB.');
         result = await submit(endpoint.url, { operation: command === 'exec' ? 'eval' : command, code, limit: o.limit, queueTimeoutMs: o['queue-timeout'] * 1000 },
-          { id: o.id, wait: !o['no-wait'], timeoutMs: o.timeout * 1000, projectPath: endpoint.projectPath, onId: jobId => console.error(`Unity Bridge job: ${jobId}`) });
+          { id: o.id, wait: !o['no-wait'], timeoutMs: o.timeout * 1000, projectPath: endpoint.projectPath, signal: controller.signal, onId: jobId => console.error(`Unity Bridge job: ${jobId}`) });
       }
       result = await saveBinary(result, o.output, { overwrite: o.overwrite });
     }
@@ -73,8 +80,9 @@ export async function main(args = process.argv.slice(2)) {
     if (['failed', 'cancelled', 'interrupted'].includes(result.state)) process.exitCode = 1;
   } catch (e) {
     const { message, stack, ...details } = e;
+    if (queriedId && !details.id) Object.assign(details, { id: queriedId, state: 'unknown', executionMayHaveOccurred: true, exitCode: 2 });
     console.error(JSON.stringify({ error: message, endpoint: endpoint?.url, ...details }, null, 2));
-    process.exitCode = e.exitCode || 1;
-  }
+    process.exitCode = details.exitCode || 1;
+  } finally { process.removeListener('SIGINT', stopWaiting); process.removeListener('SIGTERM', stopWaiting); }
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await main();
