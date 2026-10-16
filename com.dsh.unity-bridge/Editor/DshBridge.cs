@@ -33,7 +33,7 @@ namespace DshBridge
     [Serializable] public sealed class HealthView
     {
         public bool ok = true, compiling, updating, playing, paused;
-        public string unity, bridge = "0.3.0", protocol = "2", projectPath, projectName, instanceId, sampledUtc;
+        public string unity, bridge = "0.3.1", protocol = "2", projectPath, projectName, instanceId, sampledUtc;
         public string compiler = "Unity Roslyn / C# 9";
         public int pid, port, queued, loadedSnippets;
         public string[] capabilities = { "jobs", "deduplication", "durable-status", "cancel-queued", "hierarchy", "logs", "state", "screenshot" };

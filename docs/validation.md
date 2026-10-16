@@ -1,12 +1,17 @@
-# Validation — 0.3.0
+# Validation — 0.3.1
 
 Validated on 2026-10-16 with Windows, Unity 2022.3.62f3 and Node 22.23.2. Tests used dedicated disposable projects; game projects were not modified.
+
+All 43 Node regressions passed for 0.3.1, including model-visible execution flags, cancellation wording and a single uncertainty warning per failed query. The executor behavior is unchanged from 0.3.0.
 
 - Shared client regressions cover explicit token propagation, pre-dispatch cancellation, cancellation after submission, interrupted polling, malformed/mismatched replies, server/query failures retaining IDs, artifact write failures, and a full 8 MiB binary result.
 - DSH adapter tests cover native tool schema registration, the legacy `{code}` call shape, single submission, pre-submission ID recovery, uncertain outcomes, project targeting, authentication, binary artifacts, bounded rendering and the local `recent` journal.
 - The DSH bundle loader and adapter were exercised against both mock servers and a real Editor: discovery/health, C# evaluation, compilation failures, binary file output and status queries.
 - Editor smoke tests passed for the HTTP contract, C# 9/System and project API references, deduplication, cached snippets, diagnostics, binary output, inspection commands and project guards. Omitted inspection limits returned multiple log lines; an explicit limit of 1 returned one line.
 - Recovery tests passed for status responsiveness while the main thread runs, queued cancellation/expiry, wait timeout followed by result recovery, domain reload and retained deduplication.
+- The published v0.3.0 Git dependency resolved in a new project with `source=git` and commit `955577c44fec9d48bfcf8f02849f931e72fabc98`. All 17 Editor smoke checks and 6 recovery checks passed against that installation. Two simultaneous Editors used ports 6417/6418; the Git-installed Codex client selected the requested project and invoked its Editor assembly.
+- Codex installed the tagged 0.3.0 plugin. DSH's bundle installed the same Git commit; package-lock was pinned to HTTPS and a clean `npm ci --ignore-scripts` succeeded with matching client/adapter source.
+- After restarting Desktop, its original session directly invoked native `unity_execute` and `unity_bridge`: project selection, project assembly evaluation, status/recent, binary output and same-ID re-save, protected existing files, compilation failure, unknown IDs, short waits with later completion and queued cancellation all passed. CLI/mock calls did not substitute for this host check.
 - Desktop Host caches imported DSH plugin modules. Editing bundle files or touching profile configuration does not reload an existing preset's module. Restart Desktop after installing an adapter update; verify the actual tool table contains `unity_bridge` before using its new parameters.
 
 ## Previous full executor validation (0.2.0)

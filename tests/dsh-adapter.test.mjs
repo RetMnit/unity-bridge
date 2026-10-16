@@ -293,6 +293,7 @@ test('unity_bridge reports failure states, waits, and cancels only queued jobs',
   assert.equal(failed.executionMayHaveOccurred, false);
   assert.match(failed.error, /CS0103/);
   assert.match(tool.output.render({ action: 'status' }, failed)[0].text, /failed/);
+  assert.match(tool.output.render({ action: 'status' }, failed)[0].text, /executionMayHaveOccurred=false/);
 
   const ok = await tool.execute({ action: 'wait', id: 'ok-1', timeoutSeconds: 2 }, {});
   assert.equal(ok.outcome, 'succeeded');
@@ -300,6 +301,9 @@ test('unity_bridge reports failure states, waits, and cancels only queued jobs',
 
   const cancelled = await tool.execute({ action: 'cancel', id: 'queued-1' }, {});
   assert.equal(cancelled.outcome, 'cancelled');
+  const cancellationText = tool.output.render({ action: 'cancel' }, cancelled)[0].text;
+  assert.match(cancellationText, /executionMayHaveOccurred=false/);
+  assert.doesNotMatch(cancellationText, /Terminal failure/);
 
   const rejected409 = await tool.execute({ action: 'cancel', id: 'running-1' }, {});
   assert.equal(rejected409.ok, false);
@@ -636,6 +640,7 @@ test('failed job queries keep the ID and endpoint and never claim the write did 
   assert.equal(missing.outcome, 'unknown');
   assert.match(missing.hint, /evicted|unknown/i);
   assert.match(missing.hint, /does not prove/i);
+  assert.equal((missing.hint.match(/does not prove/gi) || []).length, 1);
 
   mode = 'drop';
   const dropped = await manage.execute({ action: 'wait', id: 'job-abc', timeoutSeconds: 1 }, {});

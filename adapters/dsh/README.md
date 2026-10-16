@@ -14,13 +14,15 @@ tests/dsh-adapter.test.mjs      隔离 mock Editor 下的用例（不需要 Unit
 
 ```json
 {
-  "dependencies": { "@retmnit/unity-bridge": "git+https://github.com/RetMnit/unity-bridge.git#v0.3.0" }
+  "dependencies": { "@retmnit/unity-bridge": "git+https://github.com/RetMnit/unity-bridge.git#v0.3.1" }
 }
 ```
 
 ```bash
 cd <bundle-dir> && npm install      # 生成 node_modules；升级 = 改标签后重跑
 ```
+
+检查并保留 `package-lock.json`。部分 npm 版本会把 GitHub 依赖的 `resolved` 规范化为 `git+ssh`；使用 HTTPS 时，将其协议设为 `git+https://github.com/RetMnit/unity-bridge.git#<标签对应提交SHA>`，再用 `npm ci --ignore-scripts` 验证和复现安装。依赖声明仍固定版本标签。
 
 bundle 里的插件文件只做解析与再导出（包导出 `./dsh` → `adapters/dsh/unity-bridge.mjs`）：
 

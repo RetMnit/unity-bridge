@@ -7,13 +7,13 @@
 在 Package Manager 中选择 **Add package from git URL**，输入：
 
 ```text
-https://github.com/RetMnit/unity-bridge.git?path=/com.dsh.unity-bridge#v0.3.0
+https://github.com/RetMnit/unity-bridge.git?path=/com.dsh.unity-bridge#v0.3.1
 ```
 
 也可在项目 `Packages/manifest.json` 的 `dependencies` 中添加：
 
 ```json
-"com.dsh.unity-bridge": "https://github.com/RetMnit/unity-bridge.git?path=/com.dsh.unity-bridge#v0.3.0"
+"com.dsh.unity-bridge": "https://github.com/RetMnit/unity-bridge.git?path=/com.dsh.unity-bridge#v0.3.1"
 ```
 
 包名保持 `com.dsh.unity-bridge` 以兼容已有工程；显示名和菜单是 **Unity Bridge**。编辑器加载后自动启动，菜单 `Tools > Unity Bridge > Start/Stop` 可手动控制。Stop 在当前编辑器会话内跨域重载保持有效。
@@ -27,9 +27,11 @@ https://github.com/RetMnit/unity-bridge.git?path=/com.dsh.unity-bridge#v0.3.0
 本机需要 Node.js 18+。安装仓库内的 Skill/CLI 插件：
 
 ```powershell
-codex plugin marketplace add https://github.com/RetMnit/unity-bridge.git --ref v0.3.0
+codex plugin marketplace add https://github.com/RetMnit/unity-bridge.git --ref v0.3.1
 codex plugin add unity-bridge@unity-bridge-tools
 ```
+
+升级已固定到旧标签的 marketplace 时，先运行 `codex plugin marketplace remove unity-bridge-tools`，再运行上述两条命令。旧来源未移除时，CLI 会拒绝用不同 ref 覆盖；安装后在新会话加载更新的 Skill。
 
 新会话加载插件后，可以要求 Codex 检查场景、读取 Console、执行 Editor C# 或截图。它调用的是插件自带的普通 Node 程序，Desktop 和 Codex CLI 均可使用；不需要再启动一个 Codex agent。
 
@@ -50,7 +52,7 @@ node plugins/unity-bridge/skills/unity-bridge/scripts/unity-bridge.mjs exec --pr
 在承载 Unity preset 的 bundle 中，添加固定标签的依赖并安装：
 
 ```json
-"dependencies": { "@retmnit/unity-bridge": "git+https://github.com/RetMnit/unity-bridge.git#v0.3.0" }
+"dependencies": { "@retmnit/unity-bridge": "git+https://github.com/RetMnit/unity-bridge.git#v0.3.1" }
 ```
 
 插件行使用 bundle 内的薄入口，再导出 `@retmnit/unity-bridge/dsh`；不复制公共客户端，也不记录开发机路径。完整入口、宿主重载方式和配置见 [DSH adapter](adapters/dsh/README.md)。

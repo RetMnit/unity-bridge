@@ -1,5 +1,11 @@
 # Changelog — com.dsh.unity-bridge
 
+## [0.3.1] - 2026-10-16
+
+- Show executionMayHaveOccurred in DSH's model-visible job output, including compilation failures and uncertain results.
+- Give cancelled/interrupted jobs their own guidance and avoid duplicate unknown-ID warnings.
+- Document verified marketplace upgrades and HTTPS Git lockfile installation. Protocol and executor behavior remain compatible with 0.3.0.
+
 ## [0.3.0] - 2026-10-16
 
 - Added a DSH-native adapter to the repository, sharing the same Node client as the Codex CLI for project selection, task submission/recovery, authentication and binary artifacts.

@@ -91,7 +91,7 @@ export function rejected(error, context = {}) {
     projectPath: (typeof error?.projectPath === 'string' && error.projectPath) || (typeof context.project === 'string' ? context.project : ''),
     hint: notSubmitted
       ? 'Nothing was submitted or executed, so retrying is safe.'
-      : joinGuidance(guidance, jobQuery && id ? 'This does not prove the command did not run: retry the same ID instead of repeating the write.' : ''),
+      : joinGuidance(guidance, jobQuery && id && !/does not prove/i.test(guidance) ? 'This query does not prove whether the command ran; inspect its state before repeating a write.' : ''),
   };
 }
 
@@ -120,10 +120,11 @@ export function renderJob(action, value) {
   ].filter(Boolean).join(' ');
 
   const body = [];
+  if (value.id && typeof value.executionMayHaveOccurred === 'boolean') body.push(`executionMayHaveOccurred=${value.executionMayHaveOccurred}`);
   if (value.outcome === 'not-submitted') body.push('nothing was submitted, so retrying is safe.');
   if (value.result) body.push(value.result);
   if (Array.isArray(value.logs) && value.logs.length) body.push(value.logs.join('\n'));
-  if (value.error) body.push(`error: ${value.error}`);
+  if (value.error) body.push(`${value.outcome === 'cancelled' ? 'reason' : 'error'}: ${value.error}`);
   if (value.artifactError) body.push(`binary artifact NOT written: ${value.artifactError}`);
   if (value.outputPath) body.push(`binary saved: ${value.outputPath} (${value.byteLength ?? 0} bytes)`);
   if (value.hint) body.push(`note: ${value.hint}`);

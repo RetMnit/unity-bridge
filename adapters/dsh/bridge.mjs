@@ -465,6 +465,10 @@ export class UnityBridge {
     }
     if (outcome === 'pending' || outcome === 'unknown') {
       value.hint = joinHints(value.hint, `Outcome not final. Query unity_bridge {"action":"status","id":"${value.id}"} before repeating any write; never resubmit with a new ID.`);
+    } else if (outcome === 'cancelled') {
+      value.hint = joinHints(value.hint, 'Cancelled. No automatic replay is scheduled.');
+    } else if (outcome === 'interrupted') {
+      value.hint = joinHints(value.hint, 'Execution was interrupted. Inspect project state before retrying; changes may be partial.');
     } else if (outcome !== 'succeeded') {
       value.hint = joinHints(value.hint, 'Terminal failure. Inspect `error` and the Editor console; a running snippet is not rolled back.');
     }

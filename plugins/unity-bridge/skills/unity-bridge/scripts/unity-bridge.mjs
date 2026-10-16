@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { connect, discover, request, submit, pollJob, checkedJob, saveBinary, BridgeError } from './client.mjs';
 
-const help = `Unity Bridge 0.3.0 (Node 18+, localhost only)
+const help = `Unity Bridge 0.3.1 (Node 18+, localhost only)
   unity-bridge list
   unity-bridge health|state|hierarchy|logs|screenshot [options]
   unity-bridge exec --file snippet.cs | --code "return 42;" [options]
