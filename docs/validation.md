@@ -1,4 +1,8 @@
-# Validation — 0.3.1
+# Validation — 0.4.0
+
+Package identity is `com.retmnit.unity-bridge`, namespace `UnityBridge`, and entry type `UnityBridgeServer`. The existing five `.meta` files match byte-for-byte and the `UnityBridge.Editor` assembly identity is preserved. All 43 Node tests and 17 source-package Editor smoke checks passed for the renamed package.
+
+## Previous integration validation (0.3.1)
 
 Validated on 2026-10-16 with Windows, Unity 2022.3.62f3 and Node 22.23.2. Tests used dedicated disposable projects; game projects were not modified.
 

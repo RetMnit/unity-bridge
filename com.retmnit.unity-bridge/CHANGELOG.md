@@ -1,4 +1,10 @@
-# Changelog — com.dsh.unity-bridge
+# Changelog — Unity Bridge
+
+## [0.4.0] - 2026-10-16
+
+- Renamed the shared UPM package and repository directory to `com.retmnit.unity-bridge`, with agent-neutral `UnityBridge` namespace and `UnityBridgeServer.cs` entry point.
+- Preserved existing asset GUIDs, `UnityBridge.Editor` assembly identity, protocol 2 and persisted job history.
+- Upgrade by replacing the old manifest dependency with the new package name/path together. Installing both packages is unsupported because they share asset and assembly identities; see the README migration instructions.
 
 ## [0.3.1] - 2026-10-16
 

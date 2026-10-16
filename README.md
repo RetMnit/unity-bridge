@@ -7,16 +7,24 @@
 在 Package Manager 中选择 **Add package from git URL**，输入：
 
 ```text
-https://github.com/RetMnit/unity-bridge.git?path=/com.dsh.unity-bridge#v0.3.1
+https://github.com/RetMnit/unity-bridge.git?path=/com.retmnit.unity-bridge#v0.4.0
 ```
 
 也可在项目 `Packages/manifest.json` 的 `dependencies` 中添加：
 
 ```json
-"com.dsh.unity-bridge": "https://github.com/RetMnit/unity-bridge.git?path=/com.dsh.unity-bridge#v0.3.1"
+"com.retmnit.unity-bridge": "https://github.com/RetMnit/unity-bridge.git?path=/com.retmnit.unity-bridge#v0.4.0"
 ```
 
-包名保持 `com.dsh.unity-bridge` 以兼容已有工程；显示名和菜单是 **Unity Bridge**。编辑器加载后自动启动，菜单 `Tools > Unity Bridge > Start/Stop` 可手动控制。Stop 在当前编辑器会话内跨域重载保持有效。
+包名为 `com.retmnit.unity-bridge`，显示名和菜单是 **Unity Bridge**。编辑器加载后自动启动，菜单 `Tools > Unity Bridge > Start/Stop` 可手动控制。Stop 在当前编辑器会话内跨域重载保持有效。
+
+### 从 0.3.x 迁移
+
+0.4.0 将公共包标识和目录改为 `com.retmnit.unity-bridge`，C# 命名空间改为 `UnityBridge`，入口改为 `UnityBridgeServer`；现有 `.meta` GUID 和 `UnityBridge.Editor` 程序集名称保留。HTTP 协议仍为 2，两端客户端兼容。
+
+在 `Packages/manifest.json` 的 `dependencies` 中，删除旧键 `com.dsh.unity-bridge`，添加上面的新键与 Git URL，在同一次编辑中替换完成。不要同时安装新旧包，它们共享程序集和资产 GUID。由 Unity 重新解析 `packages-lock.json`。仅修改旧 URL 末尾的版本号不能完成此次迁移。
+
+旧标签仍可通过各自的旧包路径安装；项目中的任务记录继续保存在 `Library/UnityBridge/jobs`。若自己的 Editor 代码直接引用了旧 `DshBridge` 类型，需同步更新命名空间和入口类型。
 
 依赖固定到标签，不跟随本地源码修改。升级时替换为新的已发布标签；开发者在此仓库改源码并提交、打标签、推送，项目内的 PackageCache 不用于开发。无需任何硬编码磁盘引用。
 
@@ -27,7 +35,7 @@ https://github.com/RetMnit/unity-bridge.git?path=/com.dsh.unity-bridge#v0.3.1
 本机需要 Node.js 18+。安装仓库内的 Skill/CLI 插件：
 
 ```powershell
-codex plugin marketplace add https://github.com/RetMnit/unity-bridge.git --ref v0.3.1
+codex plugin marketplace add https://github.com/RetMnit/unity-bridge.git --ref v0.4.0
 codex plugin add unity-bridge@unity-bridge-tools
 ```
 
@@ -52,7 +60,7 @@ node plugins/unity-bridge/skills/unity-bridge/scripts/unity-bridge.mjs exec --pr
 在承载 Unity preset 的 bundle 中，添加固定标签的依赖并安装：
 
 ```json
-"dependencies": { "@retmnit/unity-bridge": "git+https://github.com/RetMnit/unity-bridge.git#v0.3.1" }
+"dependencies": { "@retmnit/unity-bridge": "git+https://github.com/RetMnit/unity-bridge.git#v0.4.0" }
 ```
 
 插件行使用 bundle 内的薄入口，再导出 `@retmnit/unity-bridge/dsh`；不复制公共客户端，也不记录开发机路径。完整入口、宿主重载方式和配置见 [DSH adapter](adapters/dsh/README.md)。

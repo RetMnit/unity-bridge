@@ -1,4 +1,4 @@
-# HTTP protocol 2 / bridge 0.3.1
+# HTTP protocol 2 / bridge 0.4.0
 
 Transport is localhost HTTP with UTF-8 JSON and Content-Length; chunked request bodies are unsupported. Maximum header 16 KiB, body 1 MiB, 16 simultaneous connections, 32 nonterminal jobs. All Unity API calls and snippet execution occur on the Editor main thread. Compilation runs in a child process off the main thread.
 

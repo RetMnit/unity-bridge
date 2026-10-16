@@ -14,7 +14,7 @@ tests/dsh-adapter.test.mjs      隔离 mock Editor 下的用例（不需要 Unit
 
 ```json
 {
-  "dependencies": { "@retmnit/unity-bridge": "git+https://github.com/RetMnit/unity-bridge.git#v0.3.1" }
+  "dependencies": { "@retmnit/unity-bridge": "git+https://github.com/RetMnit/unity-bridge.git#v0.4.0" }
 }
 ```
 

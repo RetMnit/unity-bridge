@@ -1,7 +1,7 @@
 # Unity Bridge — shared executor and clients
 
 ## Scope and layout
-- `com.dsh.unity-bridge/`: Unity 2022.3 UPM package. Keep its package name and existing `.meta` GUIDs stable; display branding is agent-neutral.
+- `com.retmnit.unity-bridge/`: Unity 2022.3 UPM package. Keep its package name and existing `.meta` GUIDs stable; display branding is agent-neutral.
 - `plugins/unity-bridge/`: self-contained Codex Skill/CLI plugin. No MCP or user-specific paths.
 - `adapters/dsh/`: DSH-native tools, using the same Node client through portable relative imports. Local presets install this package from its Git release.
 - `.agents/plugins/marketplace.json`: installable plugin catalog.
@@ -9,9 +9,9 @@
 - `docs/protocol.md`: public wire contract, failure semantics and DSH adaptation guidance.
 
 ## Compatibility
-- Current release is 0.3.1 / protocol 2. Preserve legacy `GET /api/health` and `POST /api/execute` result/logs/error semantics.
+- Current release is 0.4.0 / protocol 2. Preserve legacy `GET /api/health` and `POST /api/execute` result/logs/error semantics.
 - Interface changes require a package/plugin version update and CHANGELOG entry. Keep DSH and Codex documentation aligned. Breaking changes require coordinating both clients.
-- Unity projects install by HTTPS Git URL with `?path=/com.dsh.unity-bridge#<version-tag>`, never by a hardcoded disk dependency. Source edits do not update projects until a new revision is installed.
+- Unity projects install by HTTPS Git URL with `?path=/com.retmnit.unity-bridge#<version-tag>`, never by a hardcoded disk dependency. Source edits do not update projects until a new revision is installed.
 - Authentication is optional through an environment variable. Never commit credentials, discovery descriptors, user project paths, test caches or binary compiler dependencies.
 
 ## Engineering invariants

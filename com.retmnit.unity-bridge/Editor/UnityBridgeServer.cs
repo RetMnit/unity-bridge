@@ -1,4 +1,4 @@
-// Agent-neutral Unity Bridge. Namespace/file GUID retained for compatibility.
+// Shared Unity Editor bridge. Existing asset GUIDs are preserved.
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +16,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Process = System.Diagnostics.Process;
 
-namespace DshBridge
+namespace UnityBridge
 {
     [Serializable] public sealed class BridgeRequest
     {
@@ -33,7 +33,7 @@ namespace DshBridge
     [Serializable] public sealed class HealthView
     {
         public bool ok = true, compiling, updating, playing, paused;
-        public string unity, bridge = "0.3.1", protocol = "2", projectPath, projectName, instanceId, sampledUtc;
+        public string unity, bridge = "0.4.0", protocol = "2", projectPath, projectName, instanceId, sampledUtc;
         public string compiler = "Unity Roslyn / C# 9";
         public int pid, port, queued, loadedSnippets;
         public string[] capabilities = { "jobs", "deduplication", "durable-status", "cancel-queued", "hierarchy", "logs", "state", "screenshot" };
@@ -87,7 +87,7 @@ namespace DshBridge
         private void Cleanup() { try { if (Directory.Exists(Folder)) Directory.Delete(Folder, true); } catch { } }
     }
 
-    [InitializeOnLoad] public static class DshBridge
+    [InitializeOnLoad] public static class UnityBridgeServer
     {
         private const int MaxJobs = 128, MaxQueue = 32, MaxSnippets = 128, MaxBody = 1024 * 1024, MaxBinary = 8 * 1024 * 1024;
         private const string EnabledKey = "UnityBridge.Enabled";
@@ -106,7 +106,7 @@ namespace DshBridge
         private static int port, pid;
         private static double nextWatchdog, nextHealth;
 
-        static DshBridge()
+        static UnityBridgeServer()
         {
             root = Path.GetFullPath(Path.Combine(Application.dataPath, ".."));
             journal = Path.Combine(root, "Library", "UnityBridge", "jobs");
