@@ -2,6 +2,10 @@
 
 Package identity is `com.retmnit.unity-bridge`, namespace `UnityBridge`, and entry type `UnityBridgeServer`. The existing five `.meta` files match byte-for-byte and the `UnityBridge.Editor` assembly identity is preserved. All 43 Node tests and 17 source-package Editor smoke checks passed for the renamed package.
 
+A running isolated project was switched to the published 0.3.1 Git package and then migrated to the published 0.4.0 Git package (`bd3692ada1938453a841784ee41935e359c489f1`). Its lock contained only the new package identity. A completed job record survived unchanged and same-ID submission returned the original record without replay. The new C# type resolved as `UnityBridge.UnityBridgeServer:UnityBridge.Editor`. All 17 Git-installed Editor checks and 6 recovery checks passed after migration.
+
+Codex and the DSH bundle installed the tagged 0.4.0 release. The installed DSH adapter successfully queried health and evaluated the new C# type against the real Editor. Its three executable adapter/client modules were byte-identical to 0.3.1, so this identity-only update required no Desktop runtime reload.
+
 ## Previous integration validation (0.3.1)
 
 Validated on 2026-10-16 with Windows, Unity 2022.3.62f3 and Node 22.23.2. Tests used dedicated disposable projects; game projects were not modified.
