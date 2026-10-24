@@ -7,13 +7,13 @@
 在 Package Manager 中选择 **Add package from git URL**，输入：
 
 ```text
-https://github.com/RetMnit/unity-bridge.git?path=/com.retmnit.unity-bridge#v0.4.0
+https://github.com/RetMnit/unity-bridge.git?path=/com.retmnit.unity-bridge#v0.4.1
 ```
 
 也可在项目 `Packages/manifest.json` 的 `dependencies` 中添加：
 
 ```json
-"com.retmnit.unity-bridge": "https://github.com/RetMnit/unity-bridge.git?path=/com.retmnit.unity-bridge#v0.4.0"
+"com.retmnit.unity-bridge": "https://github.com/RetMnit/unity-bridge.git?path=/com.retmnit.unity-bridge#v0.4.1"
 ```
 
 包名为 `com.retmnit.unity-bridge`，显示名和菜单是 **Unity Bridge**。编辑器加载后自动启动，菜单 `Tools > Unity Bridge > Start/Stop` 可手动控制。Stop 在当前编辑器会话内跨域重载保持有效。
@@ -35,7 +35,7 @@ https://github.com/RetMnit/unity-bridge.git?path=/com.retmnit.unity-bridge#v0.4.
 本机需要 Node.js 18+。安装仓库内的 Skill/CLI 插件：
 
 ```powershell
-codex plugin marketplace add https://github.com/RetMnit/unity-bridge.git --ref v0.4.0
+codex plugin marketplace add https://github.com/RetMnit/unity-bridge.git --ref v0.4.1
 codex plugin add unity-bridge@unity-bridge-tools
 ```
 
@@ -60,7 +60,7 @@ node plugins/unity-bridge/skills/unity-bridge/scripts/unity-bridge.mjs exec --pr
 在承载 Unity preset 的 bundle 中，添加固定标签的依赖并安装：
 
 ```json
-"dependencies": { "@retmnit/unity-bridge": "git+https://github.com/RetMnit/unity-bridge.git#v0.4.0" }
+"dependencies": { "@retmnit/unity-bridge": "git+https://github.com/RetMnit/unity-bridge.git#v0.4.1" }
 ```
 
 插件行使用 bundle 内的薄入口，再导出 `@retmnit/unity-bridge/dsh`；不复制公共客户端，也不记录开发机路径。完整入口、宿主重载方式和配置见 [DSH adapter](adapters/dsh/README.md)。

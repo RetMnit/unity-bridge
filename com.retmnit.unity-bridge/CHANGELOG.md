@@ -1,5 +1,11 @@
 # Changelog — Unity Bridge
 
+## [0.4.1] - 2026-10-24
+
+- Log an explicit confirmation for manual Stop, including an already-stopped message on repeated Stop. Internal shutdown during reload or exit remains quiet.
+- Set the Package Manager author and grouping label to RetMnit.
+- Add an isolated Editor regression for Stop logging, listener shutdown, watchdog behavior and restart.
+
 ## [0.4.0] - 2026-10-16
 
 - Renamed the shared UPM package and repository directory to `com.retmnit.unity-bridge`, with agent-neutral `UnityBridge` namespace and `UnityBridgeServer.cs` entry point.

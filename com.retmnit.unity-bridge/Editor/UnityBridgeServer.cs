@@ -33,7 +33,7 @@ namespace UnityBridge
     [Serializable] public sealed class HealthView
     {
         public bool ok = true, compiling, updating, playing, paused;
-        public string unity, bridge = "0.4.0", protocol = "2", projectPath, projectName, instanceId, sampledUtc;
+        public string unity, bridge = "0.4.1", protocol = "2", projectPath, projectName, instanceId, sampledUtc;
         public string compiler = "Unity Roslyn / C# 9";
         public int pid, port, queued, loadedSnippets;
         public string[] capabilities = { "jobs", "deduplication", "durable-status", "cancel-queued", "hierarchy", "logs", "state", "screenshot" };
@@ -140,7 +140,13 @@ namespace UnityBridge
             new Thread(() => AcceptLoop(socket)) { IsBackground = true, Name = "Unity Bridge HTTP" }.Start();
             Debug.Log("[Unity Bridge] Listening on http://127.0.0.1:" + port + " (" + root + ")");
         }
-        [MenuItem("Tools/Unity Bridge/Stop")] public static void Stop() { SessionState.SetBool(EnabledKey, false); Shutdown("Bridge stopped."); }
+        [MenuItem("Tools/Unity Bridge/Stop")] public static void Stop()
+        {
+            bool wasRunning = running;
+            SessionState.SetBool(EnabledKey, false);
+            Shutdown("Bridge stopped.");
+            Debug.Log(wasRunning ? "[Unity Bridge] Stopped." : "[Unity Bridge] Already stopped.");
+        }
         public static bool IsRunning() { return running; }
         [MenuItem("Tools/Unity Bridge/Reload Domain")] public static void ReloadDomain() { EditorUtility.RequestScriptReload(); }
         private static void AutoStart()

@@ -1,10 +1,10 @@
 {
   "name": "com.retmnit.unity-bridge",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "displayName": "Unity Bridge",
   "description": "Agent-neutral localhost bridge with Unity Roslyn evaluation, durable command status and project discovery.",
   "unity": "2022.3",
   "author": {
-    "name": "Unity Bridge contributors"
+    "name": "RetMnit"
   }
 }

@@ -1,4 +1,8 @@
-# Validation — 0.4.0
+# Validation — 0.4.1
+
+Windows / Unity 2022.3.62f3 / Node 22, isolated Editor project: all 43 Node tests, 17 Editor smoke checks, 6 recovery checks and 5 Stop lifecycle checks passed. Manual Stop logs exactly one confirmation, repeated Stop logs already stopped, the listener closes, the watchdog leaves it stopped, and Start restores service. Internal domain-reload shutdown does not emit the manual Stop message. Package author is RetMnit; package identity, meta GUIDs, assembly identity and protocol 2 are unchanged.
+
+## Validation — 0.4.0
 
 Package identity is `com.retmnit.unity-bridge`, namespace `UnityBridge`, and entry type `UnityBridgeServer`. The existing five `.meta` files match byte-for-byte and the `UnityBridge.Editor` assembly identity is preserved. All 43 Node tests and 17 source-package Editor smoke checks passed for the renamed package.
 
